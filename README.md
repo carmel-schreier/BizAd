@@ -1,2 +1,5 @@
 # BizAd
-React &amp; Node.js business advertainment project
+
+React & Node.js business advertisement project
+
+SET DEBUG=server:\*& npm start

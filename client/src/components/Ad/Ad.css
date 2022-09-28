@@ -1,0 +1,24 @@
+br {
+  background-color: black;
+  height: 0.6px;
+}
+
+.number {
+  border: 1px solid black;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.card-img-top {
+  height: 180px;
+}
+
+li {
+  font-size: 14px;
+  font-weight: 600;
+}
