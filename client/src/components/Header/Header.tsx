@@ -1,9 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+
 import Title from "../Title/Title";
 import "./Header.css";
-//import LogOut from "../auth/LogOut";
+import LogOut from "../auth/LogOut";
 
 class Header extends React.Component {
   render() {
@@ -16,7 +17,11 @@ class Header extends React.Component {
                 <i className="bi-bullseye me-2"></i>
                 <div className="brand"> BizAd</div>
               </Link>
-
+              <li className="nav-item me-3">
+                <NavLink to="/" className="nav-link">
+                  Home
+                </NavLink>
+              </li>
               <li className="nav-item me-3">
                 <NavLink to="/services" className="nav-link">
                   Services
@@ -30,16 +35,16 @@ class Header extends React.Component {
             </ul>
             <ul className="navbar-nav flex-row d-flex">
               <li className="nav-item me-3">
-                <NavLink to="/login" className="nav-link">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item me-3">
                 <NavLink to="/signUp" className="nav-link">
                   Sign Up
                 </NavLink>
               </li>
-              <li className="nav-item">{/* <LogOut /> */}</li>
+              <li className="nav-item me-3">
+                <NavLink to="/login" className="nav-link">
+                  Login
+                </NavLink>
+              </li>
+              <li className="nav-item me-5">{<LogOut />}</li>
             </ul>
           </div>
         </nav>

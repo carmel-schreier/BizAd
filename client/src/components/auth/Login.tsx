@@ -64,49 +64,50 @@ function Login() {
   });
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="p-3 form-max-w m-auto d-block col-xs-12 col-md-4 offset-md-4"
-    >
-      {/* <Title text="Login" /> */}
+    <>
+      <Title text="Login" />
+      <form
+        onSubmit={formik.handleSubmit}
+        className="p-3 form-max-w m-auto d-block col-xs-12 col-md-4 offset-md-4"
+      >
+        <div className="mb-3">
+          <input
+            ref={inputRef}
+            className="form-control"
+            type="text"
+            placeholder="Email"
+            id="email"
+            name="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            onBlur={formik.handleBlur}
+          />
+        </div>
+        {formik.touched.email && formik.errors.email ? (
+          <div className="text-danger">{formik.errors.email}</div>
+        ) : null}
 
-      <div className="mb-3">
-        <input
-          ref={inputRef}
-          className="form-control"
-          type="text"
-          placeholder="Email"
-          id="email"
-          name="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          onBlur={formik.handleBlur}
-        />
-      </div>
-      {formik.touched.email && formik.errors.email ? (
-        <div className="text-danger">{formik.errors.email}</div>
-      ) : null}
+        <div className="mb-3">
+          <input
+            className="form-control"
+            type="password"
+            placeholder="Password"
+            id="password"
+            name="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            onBlur={formik.handleBlur}
+          />
+        </div>
+        {formik.touched.password && formik.errors.password ? (
+          <div className="text-danger">{formik.errors.password}</div>
+        ) : null}
 
-      <div className="mb-3">
-        <input
-          className="form-control"
-          type="password"
-          placeholder="Password"
-          id="password"
-          name="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-          onBlur={formik.handleBlur}
-        />
-      </div>
-      {formik.touched.password && formik.errors.password ? (
-        <div className="text-danger">{formik.errors.password}</div>
-      ) : null}
-
-      <button type="submit" className="btn btn-primary btn-lg w-100">
-        Login
-      </button>
-    </form>
+        <button type="submit" className="btn btn-primary btn-lg w-100">
+          Login
+        </button>
+      </form>
+    </>
   );
 }
 
