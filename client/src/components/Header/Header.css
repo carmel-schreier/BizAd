@@ -1,0 +1,21 @@
+nav {
+  background: rgb(41, 88, 190);
+}
+
+.bi-bullseye {
+  color: rgb(244, 48, 64);
+  /* margin: -1px; */
+  /* font-size: 30px; */
+  /* font-size: 24px; */
+  /* margin-right: -1px; */
+}
+.navbar-brand {
+  font-weight: bold;
+  /* font-size: 50px; */
+}
+.brand {
+  margin-right: 100px;
+  /* margin-left: -5px; */
+  /* color: rgb(244, 48, 64); */
+  /* font-size: 24px; */
+}

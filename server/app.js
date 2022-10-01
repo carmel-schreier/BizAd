@@ -7,6 +7,7 @@ const headers = require('./middleware/headers');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adsRouter = require('./routes/ads');
+const auth = require('./middleware/auth');
 
 var app = express();
 
@@ -18,9 +19,11 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 app.use(headers);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/ads', adsRouter);
+app.use('/ads', auth, adsRouter);
 
 module.exports = app;

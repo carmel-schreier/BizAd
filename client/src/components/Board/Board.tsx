@@ -1,6 +1,8 @@
 import React from "react";
 import Ad, { AdType } from "../Ad/Ad";
+import { getToken, verifyToken } from "../../services/auth";
 import "./Board.css";
+import Title from "../Title/Title";
 
 //import { Link } from "react-router-dom";
 type displayMode = "grid" | "list";
@@ -27,8 +29,15 @@ class Board extends React.Component<BoardProps, BoardState> {
   }
 
   componentDidMount() {
-    console.log("i'm here");
-    fetch("http://localhost:3000/ads")
+    if (!verifyToken()) {
+      return null;
+    }
+    fetch("http://localhost:3000/ads", {
+      method: "get",
+      headers: {
+        "x-auth-token": getToken(),
+      },
+    })
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
@@ -46,6 +55,11 @@ class Board extends React.Component<BoardProps, BoardState> {
   render() {
     return (
       <>
+        <Title text="BizAd">
+          <small className="d-block">
+            <span>Advertize you business</span>
+          </small>
+        </Title>
         <div className="d-flex justify-content-between px-5">
           <div className="input-group mt-3">
             <button type="button" className="btn btn btn-primary">

@@ -1,0 +1,12 @@
+.title-section {
+  height: 130px;
+  background-color: rgb(94, 179, 179);
+  color: white;
+  text-align: center;
+  /* font-size: 30px; */
+}
+
+h1 {
+  padding-top: 10px;
+  font-weight: 600;
+}
