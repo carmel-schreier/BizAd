@@ -7,7 +7,7 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import SignUp from "./components/auth/SingUp";
 import Board from "./components/Board/Board";
 import Header from "./components/Header/Header";
-import Services from "./components/Services/Services";
+import Services from "./components/Services/Table";
 
 function App() {
   return (

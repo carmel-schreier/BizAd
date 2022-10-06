@@ -29,17 +29,17 @@ export const patchRequest = function (
   });
 };
 
-export const getRequest = function (
-  endPoint: string
-): Promise<Response> | null {
-  if (!verifyToken()) {
-    return null;
-  }
-
-  return fetch(`${serverUrl}${endPoint}`, {
-    method: "GET",
-    headers: {
-      "x-auth-token": getToken(),
-    },
-  });
-};
+//export const getRequest = function (
+//  endPoint: string
+//): Promise<Response> | null {
+//  if (!verifyToken()) {
+//    return null;
+//  }
+//
+//  return fetch(`${serverUrl}${endPoint}`, {
+//    method: "GET",
+//    headers: {
+//      "x-auth-token": getToken(),
+//    },
+//  });
+//};

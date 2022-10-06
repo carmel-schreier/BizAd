@@ -7,6 +7,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConf, confPassword] = useState("");
   const navigate = useNavigate();
 
   function submit() {
@@ -16,6 +17,11 @@ function SignUp() {
       password,
     };
 
+    if (password != passwordConf) {
+      console.log("no match");
+      return;
+    }
+
     handleRequest("users/signup", data).then((res) => {
       // console.log('registered');
       navigate("/login");
@@ -23,41 +29,53 @@ function SignUp() {
   }
 
   return (
-    <div className="p-3 form-max-w m-auto col-xs-12 col-md-4 offset-md-4">
-      {/* <Title text="Sign Up" /> */}
+    <>
+      <Title text="Sing Up"></Title>
+      <div className="p-3 form-max-w m-auto col-xs-12 col-md-4 offset-md-4 mt-5">
+        {/* <Title text="Sign Up" /> */}
 
-      <div className="mb-3">
-        <input
-          className="form-control"
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          className="form-control"
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          className="form-control"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+        <div className="mb-3">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            className="form-control"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="mb-5">
+          <input
+            className="form-control"
+            type="password"
+            placeholder="Confirm Password"
+            value={passwordConf}
+            onChange={(e) => confPassword(e.target.value)}
+          />
+        </div>
 
-      <button onClick={submit} className="btn btn-primary btn-lg w-100">
-        Sign Up
-      </button>
-    </div>
+        <button onClick={submit} className="btn btn-primary btn-lg w-100">
+          Sign Up
+        </button>
+      </div>
+    </>
   );
 }
 
