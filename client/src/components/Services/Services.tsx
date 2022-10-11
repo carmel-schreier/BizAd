@@ -1,70 +1,52 @@
 import React from "react";
-import Header from "../Header/Header";
-import Message from ".//Message";
-import ControlBar from "./ControlBar";
+import { getToken } from "../../services/auth";
+import Title from "../Title/Title";
+//import Message from "./Message";
+//import ControlBar from "./ControlBar";
 import Table from "./Table";
+//import "./Services.css";
+//import "./ChooseForm.css";
+import ChooseForm from "./ChooseForm/ChooseForm";
 
-export type StatusType = "active" | "disabled";
+export type StatusType = "Active" | "Disabled";
 
 export interface Service {
   name: string;
   status: StatusType;
   _id?: string;
 }
+
 interface ServicesState {
   services: Array<Service>;
-  //addSuccess: boolean;
+  addedServices: Array<Service>;
   deleteSuccess: boolean;
 }
 
-//interface UsersProps {}
-
-interface ServicesState {
-  services: Array<Service>;
-}
-
 class Services extends React.Component<{}, ServicesState> {
-  //[x: string]: Function;
   constructor(props: {}) {
     super(props);
     this.state = {
       services: [],
-      //addSuccess: false,
+      addedServices: [],
       deleteSuccess: false,
     };
   }
+
   componentDidMount() {
-    fetch("http://localhost:3000/services")
+    fetch("http://localhost:3000/services", {
+      method: "get",
+      headers: {
+        "x-auth-token": getToken(),
+      },
+    })
       .then((res) => res.json())
       .then((json) => {
+        console.log(json);
         this.setState(() => ({
           services: json,
         }));
       });
   }
-
-  addService = (service: Service) => {
-    fetch("http://localhost:3000/services", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(service),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState(() => ({
-          services: [...this.state.services, json],
-          //addSuccess: true,
-        }));
-
-        setTimeout(() => {
-          this.setState(() => ({
-            //addSuccess: false,
-          }));
-        }, 2000);
-      });
-  };
 
   deleteService = (id: string) => {
     fetch("http://localhost:3000/services", {
@@ -92,23 +74,45 @@ class Services extends React.Component<{}, ServicesState> {
       });
   };
 
+  addService = (addedService: Service) => {
+    const check = this.state.addedServices.filter(
+      (x) => x.name === addedService.name
+    );
+    if (check.length === 0) this.state.addedServices.push(addedService);
+    this.setState({
+      addedServices: this.state.addedServices,
+    });
+
+    console.log(this.state.addedServices);
+  };
+
   render() {
     return (
-      <div className="bg-dark bg-opacity-10 border px-2">
-        {/* <ControlBar addService={this.addService} /> */}
-        {this.state.services.length === 0 && (
-          <div className="alert alert-warning" role="alert">
-            No services to display
-          </div>
-        )}
-        {/* {this.state.addSuccess && ( */}
-        {/* <Message type="success" children="New service was added" /> */}
-        {/* )} */}
-        {this.state.deleteSuccess && (
-          <Message type="success" children="Service was deleted" />
-        )}
-        <Table users={this.state.services} deleteUser={this.deleteService} />
-      </div>
+      <>
+        <Title text="Services">
+          <small>
+            <h4>Choose the services you would like to use </h4>
+          </small>
+        </Title>
+
+        <ChooseForm
+          services={this.state.services}
+          addService={this.addService}
+        ></ChooseForm>
+
+        <div className="bg-dark bg-opacity-10 border px-2">
+          {this.state.addedServices.length === 0 && (
+            <div className="alert alert-warning" role="alert">
+              No services to display
+            </div>
+          )}
+
+          <Table
+            addedServices={this.state.addedServices}
+            deleteService={this.deleteService}
+          />
+        </div>
+      </>
     );
   }
 }

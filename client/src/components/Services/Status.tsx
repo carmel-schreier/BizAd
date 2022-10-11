@@ -6,14 +6,12 @@ interface Props {
 function Status(props: Props) {
   function getBadgeCss() {
     switch (props.type) {
-      case "active":
+      case "Active":
         return "bg-success";
-      case "expired":
+      case "Disabled":
         return "bg-warning";
-      case "banned":
-        return "bg-danger";
       default:
-        return "bg-secondary";
+        return "bg-success";
     }
   }
   return (

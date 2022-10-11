@@ -7,7 +7,7 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import SignUp from "./components/auth/SingUp";
 import Board from "./components/Board/Board";
 import Header from "./components/Header/Header";
-import Services from "./components/Services/Table";
+import Services from "./components/Services/Services";
 
 function App() {
   return (
@@ -48,3 +48,6 @@ function App() {
 }
 
 export default App;
+function deleteServices(): Function {
+  throw new Error("Function not implemented.");
+}
