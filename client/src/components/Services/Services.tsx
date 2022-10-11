@@ -48,6 +48,45 @@ class Services extends React.Component<{}, ServicesState> {
       });
   }
 
+  addService = (addedService: Service) => {
+    const check = this.state.addedServices.filter(
+      (x) => x.name === addedService.name
+    );
+    if (check.length === 0) {
+      fetch("http://localhost:3000/services", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": getToken(),
+        },
+        body: JSON.stringify(addedService),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          // this.setState(() => ({
+          //addedServices: [...this.state.addedServices, json],
+          // }));
+          this.getServices();
+        });
+    }
+  };
+
+  getServices = () => {
+    fetch("http://localhost:3000/services/for-user", {
+      method: "get",
+      headers: {
+        "x-auth-token": getToken(),
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        this.setState(() => ({
+          addedServices: json.services,
+        }));
+      });
+  };
+
   deleteService = (id: string) => {
     fetch("http://localhost:3000/services", {
       method: "delete",
@@ -72,18 +111,6 @@ class Services extends React.Component<{}, ServicesState> {
           }));
         }, 2000);
       });
-  };
-
-  addService = (addedService: Service) => {
-    const check = this.state.addedServices.filter(
-      (x) => x.name === addedService.name
-    );
-    if (check.length === 0) this.state.addedServices.push(addedService);
-    this.setState({
-      addedServices: this.state.addedServices,
-    });
-
-    console.log(this.state.addedServices);
   };
 
   render() {

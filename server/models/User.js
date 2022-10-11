@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 1024,
     },
+    services: {
+        type: [{}],
+        required: false,
+    }
 });
 
 const User = mongoose.model('User', userSchema);
