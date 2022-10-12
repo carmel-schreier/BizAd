@@ -1,5 +1,6 @@
 //import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 import { Service } from "../Services";
 import "./ChooseForm.css";
 //import { string } from "joi";
@@ -9,18 +10,24 @@ interface ChooseProps {
   addService: Function;
 }
 
-function ChooseForm(chooseProps: ChooseProps) {
+function ChooseForm(props: ChooseProps) {
+  let firstService = {};
+  useEffect(() => {
+    firstService = props.services[0];
+  }, [props.services]);
   const formik = useFormik({
+    //enableReinitialize: true,
     initialValues: {
       name: "",
-      status: "Active",
+      status: "",
     },
 
     onSubmit: (values) => {
       console.log(values);
-      chooseProps.addService(values);
+      props.addService(values);
     },
   });
+
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -33,7 +40,7 @@ function ChooseForm(chooseProps: ChooseProps) {
         name="name"
         onChange={formik.handleChange}
       >
-        {chooseProps.services.map((service: Service) => (
+        {props.services.map((service: Service) => (
           <option key={service._id}>{service.name}</option>
         ))}
       </select>

@@ -20,7 +20,7 @@ function Table(props: Props) {
         </thead>
         <tbody>
           {props.addedServices.map((service) => (
-            <tr key={props.addedServices.indexOf(service)} className="bg-light">
+            <tr key={service._id} className="bg-light">
               <td>{service.name}</td>
               <td>
                 <Status type={service.status} />

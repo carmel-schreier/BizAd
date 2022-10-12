@@ -21,7 +21,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 1024,
     },
     services: {
-        type: [{}],
+        type: [{
+            name: String,
+            status: String
+        }],
         required: false,
     }
 });

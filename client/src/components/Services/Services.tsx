@@ -45,6 +45,7 @@ class Services extends React.Component<{}, ServicesState> {
         this.setState(() => ({
           services: json,
         }));
+        this.getServices();
       });
   }
 
@@ -63,9 +64,6 @@ class Services extends React.Component<{}, ServicesState> {
       })
         .then((res) => res.json())
         .then(() => {
-          // this.setState(() => ({
-          //addedServices: [...this.state.addedServices, json],
-          // }));
           this.getServices();
         });
     }
@@ -89,28 +87,14 @@ class Services extends React.Component<{}, ServicesState> {
 
   deleteService = (id: string) => {
     fetch("http://localhost:3000/services", {
-      method: "delete",
+      method: "put",
       headers: {
         "Content-Type": "application/json",
+        "x-auth-token": getToken(),
       },
       body: JSON.stringify({ _id: id }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        const updated = this.state.services.filter(
-          (service) => service._id !== json._id
-        );
-        this.setState(() => ({
-          services: updated,
-          deleteSuccess: true,
-        }));
-
-        setTimeout(() => {
-          this.setState(() => ({
-            deleteSuccess: false,
-          }));
-        }, 2000);
-      });
+    }).then((res) => res.json());
+    this.getServices();
   };
 
   render() {

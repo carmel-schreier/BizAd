@@ -48,4 +48,26 @@ module.exports = {
             res.status(400).send('error getting services');
         }
     },
+
+    deleteUserService: async function (req, res, next) {
+        let userEmail = utility.getUserEmail(req.header("x-auth-token"));
+        console.log(req.body._id)
+        try {
+            await User.findOneAndUpdate({
+                email: userEmail,
+            }, {
+                $pull: {
+                    services: {
+                        _id: req.body._id
+                    }
+                },
+            })
+            res.json({
+                _id: req.body._id
+            });
+        } catch (err) {
+            console.log(err);
+            res.status(400).send('error deleting service');
+        }
+    }
 }
