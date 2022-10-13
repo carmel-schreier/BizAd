@@ -22,11 +22,21 @@ const userSchema = new mongoose.Schema({
     },
     services: {
         type: [{
-            name: String,
-            status: String
-        }],
-        required: false,
-    }
+            name: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                required: true,
+            },
+            note: {
+                type: String,
+                required: false,
+            },
+        }]
+    },
+
 });
 
 const User = mongoose.model('User', userSchema);
