@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Service } from "./Services";
 import Status from "./Status";
 
@@ -21,7 +22,9 @@ function Table(props: Props) {
         <tbody>
           {props.addedServices.map((service) => (
             <tr key={service._id} className="bg-light">
-              <td>{service.name}</td>
+              <td>
+                <Link to={`/services/${service.name}`}> {service.name}</Link>
+              </td>
               <td>
                 <Status type={service.status} />
               </td>

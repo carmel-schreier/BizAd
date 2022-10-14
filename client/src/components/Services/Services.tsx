@@ -6,7 +6,7 @@ import Title from "../Title/Title";
 import Table from "./Table";
 //import "./Services.css";
 //import "./ChooseForm.css";
-import ChooseForm from "./ChooseForm/ChooseForm";
+import ChooseForm from "./SelectForm/SelectForm";
 
 export type StatusType = "Active" | "Disabled";
 
@@ -54,7 +54,7 @@ class Services extends React.Component<{}, ServicesState> {
       (x) => x.name === addedService.name
     );
     if (check.length === 0) {
-      fetch("http://localhost:3000/services", {
+      fetch("http://localhost:3000/user-services", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ class Services extends React.Component<{}, ServicesState> {
   };
 
   getServices = () => {
-    fetch("http://localhost:3000/services/for-user", {
+    fetch("http://localhost:3000/user-services", {
       method: "get",
       headers: {
         "x-auth-token": getToken(),
@@ -86,7 +86,7 @@ class Services extends React.Component<{}, ServicesState> {
   };
 
   deleteService = (id: string) => {
-    fetch("http://localhost:3000/services", {
+    fetch("http://localhost:3000/user-services", {
       method: "put",
       headers: {
         "Content-Type": "application/json",

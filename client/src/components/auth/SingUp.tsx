@@ -17,7 +17,7 @@ function SignUp() {
       password,
     };
 
-    if (password != passwordConf) {
+    if (password !== passwordConf) {
       console.log("no match");
       return;
     }

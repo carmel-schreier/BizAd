@@ -1,25 +1,41 @@
-//import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import { useEffect } from "react";
 import { Service } from "../Services";
-import "./ChooseForm.css";
-//import { string } from "joi";
+import Joi from "joi";
+import "./SelectForm.css";
 
-interface ChooseProps {
+interface SelectProps {
   services: Array<Service>;
   addService: Function;
 }
 
-function ChooseForm(props: ChooseProps) {
-  let firstService = {};
-  useEffect(() => {
-    firstService = props.services[0];
-  }, [props.services]);
+export interface IErrors {
+  [key: string]: string;
+}
+
+function SelectForm(props: SelectProps) {
+  let valid = true;
+
   const formik = useFormik({
-    //enableReinitialize: true,
     initialValues: {
       name: "",
       status: "",
+    },
+
+    validate: (values) => {
+      const errors: IErrors = {};
+
+      const schema = Joi.object().keys({
+        name: Joi.string().required().min(2).not("Pleas select a service"),
+        password: Joi.string().required().min(2).not("Define service status"),
+      });
+
+      const { error } = schema.validate(values);
+
+      if (error) {
+        valid = false;
+      }
+
+      return errors;
     },
 
     onSubmit: (values) => {
@@ -35,11 +51,12 @@ function ChooseForm(props: ChooseProps) {
     >
       <label className="pe-3">Service Name:</label>
       <select
-        className="name-input form-select text-capitalize"
+        className="name-input form-select"
         value={formik.values.name}
         name="name"
         onChange={formik.handleChange}
       >
+        <option>Pleas select a service</option>
         {props.services.map((service: Service) => (
           <option key={service._id}>{service.name}</option>
         ))}
@@ -51,14 +68,19 @@ function ChooseForm(props: ChooseProps) {
         name="status"
         onChange={formik.handleChange}
       >
+        <option>Define service status</option>
         <option value={"Active"}>Active</option>
         <option value={"Disabled"}>Disabled</option>
       </select>
-      <button type="submit" className="btn btn-success ms-3">
+      <button
+        type="submit"
+        disabled={!(valid && formik.dirty)}
+        className="btn btn-success ms-3"
+      >
         Add Service
       </button>
     </form>
   );
 }
 
-export default ChooseForm;
+export default SelectForm;

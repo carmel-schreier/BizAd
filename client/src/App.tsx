@@ -8,6 +8,7 @@ import SignUp from "./components/auth/SingUp";
 import Board from "./components/Board/Board";
 import Header from "./components/Header/Header";
 import Services from "./components/Services/Services";
+import UpdateService from "./components/Services/UpdateService/UpdateService";
 
 function App() {
   return (
@@ -24,14 +25,25 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/services"
-          element={
-            <PrivateRoute>
-              <Services />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/services">
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <Services />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path=":serviceName"
+            element={
+              <PrivateRoute>
+                <UpdateService />
+              </PrivateRoute>
+            }
+          />
+        </Route>
+
         <Route
           path="about"
           element={

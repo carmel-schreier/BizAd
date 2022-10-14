@@ -23,7 +23,6 @@ function Login() {
   }, []);
 
   const formik = useFormik({
-    // assign default value to field
     initialValues: {
       email: "",
       password: "",
