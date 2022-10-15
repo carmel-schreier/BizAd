@@ -1,6 +1,9 @@
 const {
     User
 } = require('../models/User');
+const {
+    Service
+} = require('../models/services');
 const joi = require('joi');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -30,13 +33,15 @@ module.exports = {
         try {
             const result = await User.findOne({
                 email: userEmail
-            }).findOne({
-                services: {
-                    name: serviceName
-                }
+            })({
 
-            });
+            })
 
+            // findOne({
+            //     services: {
+            //         name: serviceName
+            //     }
+            // });
             console.log(result)
             res.json(result);
         } catch (err) {

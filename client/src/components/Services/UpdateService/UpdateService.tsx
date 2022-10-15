@@ -4,26 +4,30 @@ import { useParams } from "react-router-dom";
 import Title from "../../Title/Title";
 import { Service } from "../Services";
 import { getRequest } from "../../../services/apiService";
-import UpdateForm from "./UpdateForm";
+import UpdateForm from "./UpdateForm/UpdateForm";
+import { getToken } from "../../../services/auth";
 
 function UpdateService() {
   const { serviceName } = useParams();
   const [service, setService] = useState<Service>();
 
   useEffect(() => {
-    const res = getRequest(`user-services/${serviceName}`);
-    if (!res) {
-      return;
-    }
-
-    res
+    fetch("http://localhost:3000/user-services", {
+      method: "get",
+      headers: {
+        "x-auth-token": getToken(),
+      },
+    })
       .then((res) => res.json())
-      .then((service) => {
+      .then((json) => {
+        let service = json.services.filter(
+          (x: Service) => x.name === serviceName
+        );
+        console.log(service);
         setService(service);
-        //setName(card.name);
       });
-  }, [serviceName]);
-
+  }, []);
+  //
   return (
     <>
       <Title text="Update Services">
@@ -31,7 +35,7 @@ function UpdateService() {
           <h4>{serviceName} </h4>
         </small>
       </Title>
-      <UpdateForm service={service} />;
+      {service && <UpdateForm service={service} />}
     </>
   );
 }

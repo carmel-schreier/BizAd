@@ -6,7 +6,8 @@ import Title from "../Title/Title";
 import Table from "./Table";
 //import "./Services.css";
 //import "./ChooseForm.css";
-import ChooseForm from "./SelectForm/SelectForm";
+
+import SelectForm from "./SelectForm/SelectForm";
 
 export type StatusType = "Active" | "Disabled";
 
@@ -14,6 +15,7 @@ export interface Service {
   name: string;
   status: StatusType;
   _id?: string;
+  comment?: string;
 }
 
 interface ServicesState {
@@ -106,10 +108,10 @@ class Services extends React.Component<{}, ServicesState> {
           </small>
         </Title>
 
-        <ChooseForm
+        <SelectForm
           services={this.state.services}
           addService={this.addService}
-        ></ChooseForm>
+        ></SelectForm>
 
         <div className="bg-dark bg-opacity-10 border px-2">
           {this.state.addedServices.length === 0 && (

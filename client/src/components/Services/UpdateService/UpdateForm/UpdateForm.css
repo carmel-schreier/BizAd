@@ -1,0 +1,15 @@
+form {
+  margin-top: 100px;
+  margin-left: 170px;
+}
+
+.comment {
+  margin-top: 40px;
+}
+
+.btn-secondary {
+  width: 7rem;
+}
+.textarea {
+  height: 8rem;
+}
