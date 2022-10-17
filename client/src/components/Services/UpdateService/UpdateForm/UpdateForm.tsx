@@ -1,11 +1,12 @@
 import { Service } from "../../Services";
-import { ErrorMessage, Formik, Field } from "formik";
+import { ErrorMessage, Formik, Field, Form } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IErrors } from "../../../auth/Login";
 import { patchRequest } from "../../../../services/apiService";
 import "./UpdateForm.css";
+import Status from "../../Status";
 
 interface Props {
   service: Service;
@@ -13,10 +14,14 @@ interface Props {
 
 function UpdateForm(prop: Props) {
   const service = prop.service;
+  const currentStatus = service.status;
+  let otherStatus = service.status == "Active" ? "Disabled" : "Active";
+  console.log(otherStatus);
   const navigate = useNavigate();
   const [errMsg, setErrorMsg] = useState<string>("");
 
-  function handleSubmit(values: Service) {
+  async function handleSubmit(values: Service) {
+    console.log(values);
     const res = patchRequest(`user-services/${service._id}`, values);
 
     if (!res) {
@@ -36,17 +41,21 @@ function UpdateForm(prop: Props) {
   function validate(values: Service): IErrors {
     const errors: IErrors = {};
 
-    if (values.name.length < 2) {
-      errors.name = "invalid name";
-    }
     if (!values.status) {
-      errors.price = "invalid status";
+      errors.status = "invalid status";
     }
-    if (values.comment && values.comment.length > 225) {
+    if (
+      (values.comment && values.comment.length > 225) ||
+      typeof values.comment !== "string"
+    ) {
       errors.price = "invalid note";
     }
 
     return errors;
+  }
+
+  function cancelUpdate() {
+    navigate("/services");
   }
 
   return (
@@ -57,6 +66,7 @@ function UpdateForm(prop: Props) {
         initialValues={service}
         validate={validate}
         onSubmit={(values) => handleSubmit(values)}
+        //onChange={(values) => handleChange(values)}
       >
         {({
           values,
@@ -68,21 +78,23 @@ function UpdateForm(prop: Props) {
           isValid,
           errors,
         }) => (
-          <form onSubmit={handleSubmit}>
-            <label>Status:</label>
+          <Form onSubmit={handleSubmit}>
+            <label>Update status:</label>
             <Field
-              as="select"
+              component="select"
               className="form-control form-select mt-2"
               style={{ width: "15rem" }}
+              name="status"
+              type="text"
+              // multiple={true}
             >
-              <option value={"Active"}>Active</option>
-              <option value={"Disabled"}>Disabled</option>
+              <option value="">Update status</option>
+              <option value="Active">Active</option>
+              <option value="Disabled">Disabled</option>
             </Field>
-
             {errors.name ? (
               <div className="text-danger">{errors.name}</div>
             ) : null}
-
             <label className="comment">Comment:</label>
             <Field
               as="textarea"
@@ -91,18 +103,23 @@ function UpdateForm(prop: Props) {
               className="mb-3 mt-2 form-control textarea"
               style={{ width: "20rem" }}
             ></Field>
-
             {errors.comment ? (
               <div className="text-danger">{errors.comment}</div>
             ) : null}
-            <input
-              value="Update Service"
+            <button
               type="submit"
               className="btn btn-primary mt-4 me-3"
-              disabled={!(dirty && isValid) || isSubmitting}
-            />
-            <input value="Cancel" type="" className="btn btn-secondary mt-4" />
-          </form>
+              disabled={isSubmitting}
+            >
+              Update Service
+            </button>
+            <button
+              className="btn btn-secondary mt-4"
+              onClickCapture={cancelUpdate}
+            >
+              Cancel
+            </button>
+          </Form>
         )}
       </Formik>
     </>
