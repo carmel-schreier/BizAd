@@ -4,10 +4,11 @@ const {
 //const joi = require('joi');
 module.exports = {
     getAds: async function (req, res, next) {
+        const query = req.query.q
         try {
-            const result = await Ad.find();
-            console.log("i'm in server")
-            console.log(result)
+            const result = await Ad.find({
+                $regex: query
+            });
             res.json(result);
         } catch (err) {
             console.log(err);

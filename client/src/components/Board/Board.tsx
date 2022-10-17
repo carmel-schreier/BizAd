@@ -3,6 +3,7 @@ import Ad, { AdType } from "../Ad/Ad";
 import { getToken, verifyToken } from "../../services/auth";
 import "./Board.css";
 import Title from "../Title/Title";
+import { string } from "yup";
 
 //import { Link } from "react-router-dom";
 type displayMode = "grid" | "list";
@@ -13,6 +14,8 @@ interface BoardProps {
 interface BoardState {
   display: displayMode;
   ads: Array<AdType>;
+  query: String;
+  filtered: Array<AdType>;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -22,6 +25,8 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.state = {
       display: props.defaultDisplay,
       ads: [],
+      query: "",
+      filtered: [],
       //filteredByCategory: [],
       //selectedCategory: 'all',
       //categories: ['all', 'chicken', 'vegeterian', 'asian']
@@ -43,15 +48,31 @@ class Board extends React.Component<BoardProps, BoardState> {
         console.log(json);
         this.setState(() => ({
           ads: json,
-          //cardsDisplay: json,
+          filtered: json,
         }));
       });
   }
+
   changeDisplay = (mode: displayMode) => {
     this.setState((state, props) => ({
       display: mode,
     }));
   };
+
+  displaySearched = (newQuery: string) => {
+    const filtered = this.searchAds(newQuery, [...this.state.ads]);
+    console.log("query= " + this.state.query);
+    this.setState((state, props) => ({
+      filtered: filtered,
+    }));
+  };
+
+  searchAds = (query: string, ads: Array<AdType>): Array<AdType> => {
+    return ads.filter((ad) =>
+      ad.name.toLowerCase().startsWith(query.toLowerCase())
+    );
+  };
+
   render() {
     return (
       <>
@@ -71,6 +92,7 @@ class Board extends React.Component<BoardProps, BoardState> {
                 id="form1"
                 className="form-control"
                 placeholder="Search by business name"
+                onChange={(e) => this.displaySearched(e.target.value)}
               />
             </div>
           </div>
@@ -92,7 +114,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         </div>
 
         <div className={this.state.display}>
-          {this.state.ads.map((ad) => (
+          {this.state.filtered.map((ad) => (
             <Ad key={ad._id} data={ad} />
           ))}
         </div>
