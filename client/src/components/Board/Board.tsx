@@ -3,9 +3,8 @@ import Ad, { AdType } from "../Ad/Ad";
 import { getToken, verifyToken } from "../../services/auth";
 import "./Board.css";
 import Title from "../Title/Title";
-import { string } from "yup";
+import { getRequest } from "../../services/apiService";
 
-//import { Link } from "react-router-dom";
 type displayMode = "grid" | "list";
 interface BoardProps {
   defaultDisplay: displayMode;
@@ -14,8 +13,7 @@ interface BoardProps {
 interface BoardState {
   display: displayMode;
   ads: Array<AdType>;
-  query: String;
-  filtered: Array<AdType>;
+  filteredByName: Array<AdType>;
 }
 
 class Board extends React.Component<BoardProps, BoardState> {
@@ -25,30 +23,22 @@ class Board extends React.Component<BoardProps, BoardState> {
     this.state = {
       display: props.defaultDisplay,
       ads: [],
-      query: "",
-      filtered: [],
-      //filteredByCategory: [],
-      //selectedCategory: 'all',
-      //categories: ['all', 'chicken', 'vegeterian', 'asian']
+      filteredByName: [],
     };
   }
 
   componentDidMount() {
-    if (!verifyToken()) {
-      return null;
+    const res = getRequest("ads/");
+    if (!res) {
+      return;
     }
-    fetch("http://localhost:3000/ads", {
-      method: "get",
-      headers: {
-        "x-auth-token": getToken(),
-      },
-    })
+    res
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
         this.setState(() => ({
           ads: json,
-          filtered: json,
+          filteredByName: json,
         }));
       });
   }
@@ -61,9 +51,8 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   displaySearched = (newQuery: string) => {
     const filtered = this.searchAds(newQuery, [...this.state.ads]);
-    console.log("query= " + this.state.query);
     this.setState((state, props) => ({
-      filtered: filtered,
+      filteredByName: filtered,
     }));
   };
 
@@ -114,7 +103,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         </div>
 
         <div className={this.state.display}>
-          {this.state.filtered.map((ad) => (
+          {this.state.filteredByName.map((ad) => (
             <Ad key={ad._id} data={ad} />
           ))}
         </div>
