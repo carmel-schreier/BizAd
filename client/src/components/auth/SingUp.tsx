@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleRequest } from "../../services/apiService";
+import { postRequest } from "../../services/apiService";
 import Title from "../Title/Title";
 
 function SignUp() {
@@ -22,8 +22,7 @@ function SignUp() {
       return;
     }
 
-    handleRequest("users/signup", data).then((res) => {
-      // console.log('registered');
+    postRequest("users/signup", data).then((res) => {
       navigate("/login");
     });
   }

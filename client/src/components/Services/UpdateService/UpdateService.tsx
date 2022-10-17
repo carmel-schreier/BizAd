@@ -22,7 +22,7 @@ function UpdateService() {
       .then((json) => {
         let service = json.services.filter(
           (x: Service) => x.name === serviceName
-        );
+        )[0];
         console.log(service);
         setService(service);
       });

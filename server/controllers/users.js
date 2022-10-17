@@ -37,7 +37,6 @@ module.exports = {
             const param = {
                 email: value.email
             };
-            console.log(config);
             const token = jwt.sign(param, config.jwt_secret, {
                 expiresIn: '72800s'
             });
@@ -107,8 +106,6 @@ module.exports = {
             const result = await User.findOne({
                 email: userEmail
             });
-
-            console.log(result)
             res.json(result);
         } catch (err) {
             console.log(err);
@@ -137,7 +134,6 @@ module.exports = {
 
     deleteService: async function (req, res, next) {
         let userEmail = utility.getUserEmail(req.header("x-auth-token"));
-        console.log(req.body._id)
         try {
             await User.findOneAndUpdate({
                 email: userEmail,

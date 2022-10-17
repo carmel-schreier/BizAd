@@ -2,7 +2,7 @@ import { getToken, verifyToken } from "./auth";
 
 const serverUrl = "http://localhost:3000/";
 
-export const handleRequest = function (
+export const postRequest = function (
   endPoint: string,
   data: object
 ): Promise<Response> {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Title from "../Title/Title";
 import Joi from "joi";
 import { useFormik } from "formik";
-import { handleRequest } from "../../services/apiService";
+import { postRequest } from "../../services/apiService";
 import { TOKEN_KEY } from "../../services/auth";
 
 export interface IErrors {
@@ -51,7 +51,7 @@ function Login() {
     },
 
     onSubmit: (values) => {
-      const res = handleRequest("users/login", values);
+      const res = postRequest("users/login", values);
 
       res
         .then((res) => res.json())

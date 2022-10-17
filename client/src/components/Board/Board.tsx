@@ -35,7 +35,6 @@ class Board extends React.Component<BoardProps, BoardState> {
     res
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         this.setState(() => ({
           ads: json,
           filteredByName: json,

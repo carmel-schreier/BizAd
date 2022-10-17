@@ -1,13 +1,9 @@
 import React from "react";
 import { getToken } from "../../services/auth";
 import Title from "../Title/Title";
-//import Message from "./Message";
-//import ControlBar from "./ControlBar";
 import Table from "./Table";
-//import "./Services.css";
-//import "./ChooseForm.css";
-
 import SelectForm from "./SelectForm/SelectForm";
+import { getRequest } from "../../services/apiService";
 
 export type StatusType = "Active" | "Disabled";
 
@@ -35,20 +31,20 @@ class Services extends React.Component<{}, ServicesState> {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/services", {
-      method: "get",
-      headers: {
-        "x-auth-token": getToken(),
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json);
-        this.setState(() => ({
-          services: json,
-        }));
-        this.getServices();
-      });
+    const res = getRequest("services/");
+    if (!res) {
+      return;
+    }
+    {
+      res
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState(() => ({
+            services: json,
+          }));
+          this.getServices();
+        });
+    }
   }
 
   addService = (addedService: Service) => {
@@ -56,6 +52,7 @@ class Services extends React.Component<{}, ServicesState> {
       (x) => x.name === addedService.name
     );
     if (check.length === 0) {
+      const res = getRequest("user-services/");
       fetch("http://localhost:3000/user-services", {
         method: "post",
         headers: {
@@ -72,15 +69,13 @@ class Services extends React.Component<{}, ServicesState> {
   };
 
   getServices = () => {
-    fetch("http://localhost:3000/user-services", {
-      method: "get",
-      headers: {
-        "x-auth-token": getToken(),
-      },
-    })
+    const res = getRequest("user-services/");
+    if (!res) {
+      return;
+    }
+    res
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         this.setState(() => ({
           addedServices: json.services,
         }));

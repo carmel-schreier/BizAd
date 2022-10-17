@@ -17,8 +17,6 @@ module.exports = {
             const result = await User.findOne({
                 email: userEmail
             });
-
-            console.log(result)
             res.json(result);
         } catch (err) {
             console.log(err);
@@ -69,16 +67,27 @@ module.exports = {
 
     updateService: async function (req, res, next) {
         let userEmail = utility.getUserEmail(req.header("x-auth-token"));
+        console.log(req.params)
+        let newService = req.body;
+        console.log(newService)
         try {
             await User.findOneAndUpdate({
                 email: userEmail,
-            }, {
-                $patch: {
-                    services: {
-                        _id: req.params._id
+                services: {
+                    $elemMatch: {
+                        _id: req.params.id
                     }
-                },
-            })
+                }
+            }, {
+                $set: {
+                    'services.$.status': newService.status,
+                    'services.$.comment': newService.comment
+                }
+            }, {
+                'new': true,
+                'safe': true,
+                'upsert': true
+            });
             res.json({
                 _id: req.body._id
             });
