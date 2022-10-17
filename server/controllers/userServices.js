@@ -45,7 +45,6 @@ module.exports = {
 
     deleteService: async function (req, res, next) {
         let userEmail = utility.getUserEmail(req.header("x-auth-token"));
-        console.log(req.body._id)
         try {
             await User.findOneAndUpdate({
                 email: userEmail,
@@ -67,9 +66,8 @@ module.exports = {
 
     updateService: async function (req, res, next) {
         let userEmail = utility.getUserEmail(req.header("x-auth-token"));
-        console.log(req.params)
-        let newService = req.body;
-        console.log(newService)
+        let updatedService = req.body;
+
         try {
             await User.findOneAndUpdate({
                 email: userEmail,
@@ -80,8 +78,8 @@ module.exports = {
                 }
             }, {
                 $set: {
-                    'services.$.status': newService.status,
-                    'services.$.comment': newService.comment
+                    'services.$.status': updatedService.status,
+                    'services.$.comment': updatedService.comment
                 }
             }, {
                 'new': true,
