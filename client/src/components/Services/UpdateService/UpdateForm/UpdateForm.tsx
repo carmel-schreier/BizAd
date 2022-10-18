@@ -1,7 +1,7 @@
 import { Service } from "../../Services";
 import { useNavigate } from "react-router-dom";
 import "./UpdateForm.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { patchRequest } from "../../../../services/apiService";
 
 interface Props {
@@ -15,7 +15,6 @@ function UpdateForm(prop: Props) {
   const [status, setStatus] = useState<string>(service.status);
   const [comment, setComment] = useState<string | undefined>(service.comment);
   console.log(service);
-  const currentStatus = service.status;
   let otherStatus = service.status == "Active" ? "Disabled" : "Active";
 
   function isDisabled() {
@@ -23,7 +22,6 @@ function UpdateForm(prop: Props) {
       ? true
       : false;
   }
-
   function cancelUpdate() {
     navigate("/services");
   }

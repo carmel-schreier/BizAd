@@ -19,21 +19,21 @@ function SelectForm(props: SelectProps) {
       status: "",
     },
 
-    validate: (values) => {
-      const errors: IErrors = {};
-
-      const schema = Joi.object().keys({
-        name: Joi.string().required().min(2).not("Pleas select a service"),
-        password: Joi.string().required().min(2).not("Define service status"),
-      });
-
-      const { error } = schema.validate(values);
-
-      if (error) {
-      }
-
-      return errors;
-    },
+    // validate: (values) => {
+    //   const errors: IErrors = {};
+    //
+    //   const schema = Joi.object().keys({
+    //     name: Joi.string().required().min(2).not("Pleas select a service"),
+    //     password: Joi.string().required().min(2).not("Define service status"),
+    //   });
+    //
+    //   const { error } = schema.validate(values);
+    //
+    //   if (error) {
+    //   }
+    //
+    //   return errors;
+    // },
 
     onSubmit: (values) => {
       props.addService(values);
