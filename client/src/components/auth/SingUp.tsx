@@ -93,11 +93,10 @@ function Login() {
           />
         </div>
         {formik.touched.name && formik.errors.name ? (
-          <div className="text-danger">{formik.errors.name}</div>
+          <div className="text-danger pb-2">{formik.errors.name}</div>
         ) : null}
         <div className="mb-3">
           <input
-            ref={inputRef}
             className="form-control"
             type="text"
             placeholder="Email"
@@ -109,7 +108,7 @@ function Login() {
           />
         </div>
         {formik.touched.email && formik.errors.email ? (
-          <div className="text-danger">{formik.errors.email}</div>
+          <div className="text-danger pb-2">{formik.errors.email}</div>
         ) : null}
 
         <div className="mb-3">
@@ -125,7 +124,9 @@ function Login() {
           />
         </div>
         {formik.touched.password && formik.errors.password ? (
-          <div className="text-danger">{formik.errors.password}</div>
+          <div className="text-danger pb-2" style={{ fontSize: "13px" }}>
+            {formik.errors.password}
+          </div>
         ) : null}
 
         <div className="mb-3">
@@ -141,7 +142,9 @@ function Login() {
           />
         </div>
         {noMatch && (
-          <div className="text-danger">Confirmed password doesn't match</div>
+          <div className="text-danger pb-2" style={{ fontSize: "13px" }}>
+            Confirmed password doesn't match
+          </div>
         )}
 
         <button type="submit" className="btn btn-primary btn-lg w-100">
