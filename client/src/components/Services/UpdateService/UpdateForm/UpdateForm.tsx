@@ -15,7 +15,7 @@ function UpdateForm(prop: Props) {
   const [status, setStatus] = useState<string>(service.status);
   const [comment, setComment] = useState<string | undefined>(service.comment);
   console.log(service);
-  let otherStatus = service.status == "Active" ? "Disabled" : "Active";
+  let otherStatus = service.status === "Active" ? "Disabled" : "Active";
 
   function isDisabled() {
     return service.status === status && service.comment === comment
@@ -66,15 +66,14 @@ function UpdateForm(prop: Props) {
           className="mb-3 mt-2 form-control textarea"
           style={{ width: "20rem" }}
           onChange={(e) => setComment(e.target.value)}
-        >
-          {service.comment ? service.comment : ""}
-        </textarea>
+          defaultValue={service.comment ? service.comment : ""}
+        ></textarea>
         <input
           type="submit"
           name="submit"
           className="btn btn-primary mt-4 me-3"
           onClick={handleSubmit}
-          value="  Update Service"
+          value="Update Service"
           disabled={isDisabled()}
         />
         <button

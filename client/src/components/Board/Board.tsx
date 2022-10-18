@@ -1,6 +1,5 @@
 import React from "react";
 import Ad, { AdType } from "../Ad/Ad";
-import { getToken, verifyToken } from "../../services/auth";
 import "./Board.css";
 import Title from "../Title/Title";
 import { getRequest } from "../../services/apiService";

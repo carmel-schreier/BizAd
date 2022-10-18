@@ -10,8 +10,6 @@ export interface IErrors {
   [key: string]: string;
 }
 
-// this page demonstrates the use of Formik and joi
-
 function Login() {
   const navigate = useNavigate();
   const inputRef = useRef<null | HTMLInputElement>(null);

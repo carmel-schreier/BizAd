@@ -1,5 +1,4 @@
 import React from "react";
-//import { Link } from "react-router-dom";
 import "./Ad.css";
 
 export type AdType = {
@@ -17,12 +16,7 @@ interface Props {
   data: AdType;
 }
 
-//interface CardState {
-//
-//}
-
 class Ad extends React.Component<Props> {
-  //state = { :  }
   render() {
     const { data } = this.props;
     return (
