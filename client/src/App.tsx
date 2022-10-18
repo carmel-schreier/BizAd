@@ -5,6 +5,7 @@ import Login from "./components/auth/Login";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import SignUp from "./components/auth/SingUp";
 import Board from "./components/Board/Board";
+import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Services from "./components/Services/Services";
 import UpdateService from "./components/Services/UpdateService/UpdateService";
@@ -53,6 +54,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signUp" element={<SignUp />} />
       </Routes>
+      <Footer></Footer>
     </>
   );
 }
