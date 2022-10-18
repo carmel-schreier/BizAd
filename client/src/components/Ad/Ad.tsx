@@ -41,7 +41,7 @@ class Ad extends React.Component<Props> {
         </ul>
         <hr />
         <div className="card-body">
-          <a href={data.url} className="btn btn-primary">
+          <a href={data.url} target="_blank" className="btn btn-primary">
             Visit Website
           </a>
         </div>
