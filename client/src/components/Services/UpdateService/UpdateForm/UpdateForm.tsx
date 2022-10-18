@@ -10,12 +10,19 @@ interface Props {
 
 function UpdateForm(prop: Props) {
   const navigate = useNavigate();
+
   const service = prop.service;
   const [status, setStatus] = useState<string>(service.status);
   const [comment, setComment] = useState<string | undefined>(service.comment);
   console.log(service);
   const currentStatus = service.status;
   let otherStatus = service.status == "Active" ? "Disabled" : "Active";
+
+  function isDisabled() {
+    return service.status === status && service.comment === comment
+      ? true
+      : false;
+  }
 
   function cancelUpdate() {
     navigate("/services");
@@ -70,6 +77,7 @@ function UpdateForm(prop: Props) {
           className="btn btn-primary mt-4 me-3"
           onClick={handleSubmit}
           value="  Update Service"
+          disabled={isDisabled()}
         />
         <button
           className="btn btn-secondary mt-4"
