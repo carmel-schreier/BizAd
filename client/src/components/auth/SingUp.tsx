@@ -1,81 +1,155 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postRequest } from "../../services/apiService";
 import Title from "../Title/Title";
+import Joi from "joi";
+import { useFormik } from "formik";
+import { postRequest } from "../../services/apiService";
+import { TOKEN_KEY } from "../../services/auth";
 
-function SignUp() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConf, confPassword] = useState("");
+export interface IErrors {
+  [key: string]: string;
+}
+
+function Login() {
+  const [noMatch, setNoMatch] = useState(false);
   const navigate = useNavigate();
+  const inputRef = useRef<null | HTMLInputElement>(null);
 
-  function submit() {
-    const data = {
-      name,
-      email,
-      password,
-    };
-
-    if (password !== passwordConf) {
-      console.log("no match");
-      return;
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
     }
+  }, []);
 
-    postRequest("users/signup", data).then((res) => {
-      navigate("/login");
-    });
-  }
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      passwordConf: "",
+    },
+
+    validate: (values) => {
+      const errors: IErrors = {};
+
+      const schema = Joi.object().keys({
+        name: Joi.string().required().min(2).max(256),
+        email: Joi.string().required().min(6).max(256),
+        password: Joi.string().required().min(6).max(1024),
+        passwordConf: Joi.string().required(),
+      });
+
+      const { error } = schema.validate(values);
+
+      if (error) {
+        error.details.forEach((item) => {
+          if (item.context) {
+            const key = item.context.key + "";
+            errors[key] = item.message;
+          }
+        });
+      }
+
+      return errors;
+    },
+
+    onSubmit: (values) => {
+      if (values.password !== values.passwordConf) {
+        console.log(noMatch);
+        setNoMatch(true);
+        console.log(noMatch);
+        return;
+      }
+
+      const data = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      };
+      postRequest("users/signup", data).then((res) => {
+        navigate("/login");
+      });
+    },
+  });
 
   return (
     <>
-      <Title text="Sing Up"></Title>
-      <div className="p-3 form-max-w m-auto col-xs-12 col-md-4 offset-md-4 mt-5">
-        {/* <Title text="Sign Up" /> */}
-
+      <Title text="Sign Up" />
+      <form
+        onSubmit={formik.handleSubmit}
+        className="p-3 form-max-w m-auto d-block col-xs-12 col-md-4 offset-md-4"
+      >
         <div className="mb-3">
           <input
+            ref={inputRef}
             className="form-control"
             type="text"
             placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            id="name"
+            name="name"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            onBlur={formik.handleBlur}
           />
         </div>
+        {formik.touched.name && formik.errors.name ? (
+          <div className="text-danger">{formik.errors.name}</div>
+        ) : null}
         <div className="mb-3">
           <input
+            ref={inputRef}
             className="form-control"
             type="text"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            name="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            onBlur={formik.handleBlur}
           />
         </div>
+        {formik.touched.email && formik.errors.email ? (
+          <div className="text-danger">{formik.errors.email}</div>
+        ) : null}
+
         <div className="mb-3">
           <input
             className="form-control"
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            name="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            onBlur={formik.handleBlur}
           />
         </div>
-        <div className="mb-5">
+        {formik.touched.password && formik.errors.password ? (
+          <div className="text-danger">{formik.errors.password}</div>
+        ) : null}
+
+        <div className="mb-3">
           <input
             className="form-control"
             type="password"
-            placeholder="Confirm Password"
-            value={passwordConf}
-            onChange={(e) => confPassword(e.target.value)}
+            placeholder="Confirm password"
+            id="passwordConf"
+            name="passwordConf"
+            onChange={formik.handleChange}
+            value={formik.values.passwordConf}
+            onBlur={formik.handleBlur}
           />
         </div>
+        {noMatch && (
+          <div className="text-danger">Confirmed password doesn't match</div>
+        )}
 
-        <button onClick={submit} className="btn btn-primary btn-lg w-100">
-          Sign Up
+        <button type="submit" className="btn btn-primary btn-lg w-100">
+          Login
         </button>
-      </div>
+      </form>
     </>
   );
 }
 
-export default SignUp;
+export default Login;

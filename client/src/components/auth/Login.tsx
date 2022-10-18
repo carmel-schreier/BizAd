@@ -30,7 +30,7 @@ function Login() {
       const errors: IErrors = {};
 
       const schema = Joi.object().keys({
-        email: Joi.string().required().min(6).max(256),
+        email: Joi.string().required().email().min(6).max(256),
         password: Joi.string().required().min(6).max(1024),
       });
 
