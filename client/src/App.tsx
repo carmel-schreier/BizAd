@@ -21,7 +21,6 @@ function App() {
           element={
             <PrivateRoute>
               <Board defaultDisplay="grid" />
-              //to do check
             </PrivateRoute>
           }
         />

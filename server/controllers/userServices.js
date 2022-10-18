@@ -5,9 +5,6 @@ const {
     Service
 } = require('../models/services');
 const joi = require('joi');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const config = require('../config/dev');
 const utility = require("../shared/utility");
 
 module.exports = {
@@ -91,7 +88,7 @@ module.exports = {
             });
         } catch (err) {
             console.log(err);
-            res.status(400).send('error deleting service');
+            res.status(400).send('error updating service');
         }
     }
 }
