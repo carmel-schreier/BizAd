@@ -13,8 +13,6 @@ export interface IErrors {
 }
 
 function SelectForm(props: SelectProps) {
-  let valid = true;
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -32,17 +30,22 @@ function SelectForm(props: SelectProps) {
       const { error } = schema.validate(values);
 
       if (error) {
-        valid = false;
       }
 
       return errors;
     },
 
     onSubmit: (values) => {
-      console.log(values);
       props.addService(values);
+      formik.resetForm();
     },
   });
+
+  function valid() {
+    return formik.values.status === "" || formik.values.name == ""
+      ? false
+      : true;
+  }
 
   return (
     <form
@@ -56,7 +59,7 @@ function SelectForm(props: SelectProps) {
         name="name"
         onChange={formik.handleChange}
       >
-        <option>Pleas select a service</option>
+        <option value={""}>Pleas select a service</option>
         {props.services.map((service: Service) => (
           <option key={service._id}>{service.name}</option>
         ))}
@@ -68,13 +71,13 @@ function SelectForm(props: SelectProps) {
         name="status"
         onChange={formik.handleChange}
       >
-        <option>Define service status</option>
+        <option value={""}>Define service status</option>
         <option value={"Active"}>Active</option>
         <option value={"Disabled"}>Disabled</option>
       </select>
       <button
         type="submit"
-        disabled={!(valid && formik.dirty)}
+        disabled={!valid()}
         className="btn btn-success ms-3"
       >
         Add Service
