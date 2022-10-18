@@ -1,0 +1,14 @@
+.about {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.aboutText {
+  margin-top: 50px;
+  width: 420px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 32px;
+}
