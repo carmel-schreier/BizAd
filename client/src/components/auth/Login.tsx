@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Title from "../Title/Title";
 import Joi from "joi";
 import { useFormik } from "formik";
@@ -13,6 +13,7 @@ export interface IErrors {
 function Login() {
   const navigate = useNavigate();
   const inputRef = useRef<null | HTMLInputElement>(null);
+  const [noAccount, setNoAccount] = useState(false);
 
   useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -50,12 +51,15 @@ function Login() {
 
     onSubmit: (values) => {
       const res = postRequest("users/login", values);
-
       res
         .then((res) => res.json())
         .then((json) => {
-          localStorage.setItem(TOKEN_KEY, json.token);
-          navigate("/");
+          console.log(json);
+          if (json.token) {
+            localStorage.setItem(TOKEN_KEY, json.token);
+            navigate("/");
+          }
+          setNoAccount(true);
         });
     },
   });
@@ -103,6 +107,12 @@ function Login() {
         <button type="submit" className="btn btn-primary btn-lg w-100">
           Login
         </button>
+        {noAccount && (
+          <div className="text-danger pb-2" style={{ fontSize: "15px" }}>
+            * Problem logging in. To create an account visit out{" "}
+            <Link to={`/signUp`}> Sing-Up page</Link>
+          </div>
+        )}
       </form>
     </>
   );

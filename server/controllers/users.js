@@ -22,7 +22,6 @@ module.exports = {
 
         if (error) {
             console.log(error.details[0].message);
-            res.status(401).send('Unauthorized');
             return;
         }
 
@@ -30,9 +29,14 @@ module.exports = {
             const user = await User.findOne({
                 email: value.email
             });
-            if (!user) throw Error;
+            // console.log(user)
+            if (!user) return res.status(401).send({
+                error: 'Unauthorized'
+            });
             const validPassword = await bcrypt.compare(value.password, user.password);
-            if (!validPassword) throw 'Invalid password';
+            if (!validPassword) return res.status(401).send({
+                error: 'Unauthorized'
+            });
 
             const param = {
                 email: value.email
@@ -67,7 +71,7 @@ module.exports = {
 
         if (error) {
             console.log(error.details[0].message);
-            res.status(400).send('error sign up new user');
+            res.status(400).send('error signing up new user');
             return;
         }
 
