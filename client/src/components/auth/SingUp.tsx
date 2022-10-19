@@ -55,9 +55,7 @@ function Login() {
 
     onSubmit: (values) => {
       if (values.password !== values.passwordConf) {
-        console.log(noMatch);
         setNoMatch(true);
-        console.log(noMatch);
         return;
       }
 

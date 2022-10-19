@@ -14,7 +14,7 @@ function UpdateForm(prop: Props) {
   const service = prop.service;
   const [status, setStatus] = useState<string>(service.status);
   const [comment, setComment] = useState<string | undefined>(service.comment);
-  console.log(service);
+
   let otherStatus = service.status === "Active" ? "Disabled" : "Active";
 
   function isDisabled() {
@@ -40,6 +40,7 @@ function UpdateForm(prop: Props) {
 
     res.then((res) => {
       if (res.ok) {
+        console.log(res);
         navigate("/services");
       } else {
         console.error("something went wrong");
