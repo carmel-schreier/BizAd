@@ -29,7 +29,6 @@ module.exports = {
             const user = await User.findOne({
                 email: value.email
             });
-            // console.log(user)
             if (!user) return res.status(401).send({
                 error: 'Unauthorized'
             });
@@ -100,7 +99,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err.message);
-            res.status(400).send('error sign up new user');
+            res.status(500).send('error signing up new user');
         }
     },
 

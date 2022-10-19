@@ -54,7 +54,6 @@ function Login() {
       res
         .then((res) => res.json())
         .then((json) => {
-          console.log(json);
           if (json.token) {
             localStorage.setItem(TOKEN_KEY, json.token);
             navigate("/");
