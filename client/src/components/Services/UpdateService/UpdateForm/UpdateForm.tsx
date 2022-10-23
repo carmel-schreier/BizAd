@@ -14,6 +14,7 @@ function UpdateForm(prop: Props) {
   const service = prop.service;
   const [status, setStatus] = useState<string>(service.status);
   const [comment, setComment] = useState<string | undefined>(service.comment);
+  const [showErr, setShowErr] = useState(false);
 
   let otherStatus = service.status === "Active" ? "Disabled" : "Active";
 
@@ -40,10 +41,9 @@ function UpdateForm(prop: Props) {
 
     res.then((res) => {
       if (res.ok) {
-        console.log(res);
         navigate("/services");
       } else {
-        console.error("something went wrong");
+        setShowErr(true);
       }
     });
   }
@@ -69,6 +69,11 @@ function UpdateForm(prop: Props) {
           onChange={(e) => setComment(e.target.value)}
           defaultValue={service.comment ? service.comment : ""}
         ></textarea>
+        {showErr && (
+          <div className="text-danger pb-2" style={{ fontSize: "15px" }}>
+            *Something went wrong. Please try again
+          </div>
+        )}
         <input
           type="submit"
           name="submit"
