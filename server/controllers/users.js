@@ -22,7 +22,9 @@ module.exports = {
 
         if (error) {
             console.log(error.details[0].message);
-            return;
+            return res.status(400).send({
+                error: error.details[0].message
+            });
         }
 
         try {
@@ -52,7 +54,7 @@ module.exports = {
             });
         } catch (err) {
             console.log(err);
-            res.status(400).send('Invalid data.');
+            res.status(500).send('Something went wrong. Please try again later');
         }
     },
 
@@ -70,7 +72,9 @@ module.exports = {
 
         if (error) {
             console.log(error.details[0].message);
-            res.status(400).send('error signing up new user');
+            res.status(400).send({
+                error: 'error signing up new user'
+            });
             return;
         }
 
@@ -99,7 +103,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err.message);
-            res.status(500).send('error signing up new user');
+            res.status(500).send('Something went wrong, please try again later');
         }
     },
 

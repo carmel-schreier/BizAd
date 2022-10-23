@@ -14,6 +14,8 @@ function Login() {
   const navigate = useNavigate();
   const inputRef = useRef<null | HTMLInputElement>(null);
   const [noAccount, setNoAccount] = useState(false);
+  const [serverMassage, setServerMassage] = useState(false);
+  const [massage, setMassage] = useState("");
 
   useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -54,14 +56,25 @@ function Login() {
       res
         .then((res) => res.json())
         .then((json) => {
+          console.log(json);
           if (json.token) {
             localStorage.setItem(TOKEN_KEY, json.token);
             navigate("/");
+          } else if (json.error === `Unauthorized`) {
+            console.log(json);
+            setNoAccount(true);
+          } else {
+            setServerMassage(true);
+            setMassage(json.error);
           }
-          setNoAccount(true);
         });
     },
   });
+
+  function resetMassage() {
+    setNoAccount(false);
+    setServerMassage(false);
+  }
 
   return (
     <>
@@ -81,6 +94,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.email}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {formik.touched.email && formik.errors.email ? (
@@ -97,6 +111,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.password}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {formik.touched.password && formik.errors.password ? (
@@ -106,9 +121,14 @@ function Login() {
         <button type="submit" className="btn btn-primary btn-lg w-100">
           Login
         </button>
+        {serverMassage && (
+          <div className="text-danger pb-2" style={{ fontSize: "15px" }}>
+            {massage}
+          </div>
+        )}
         {noAccount && (
           <div className="text-danger pb-2" style={{ fontSize: "15px" }}>
-            * Problem logging in. To create an account visit out{" "}
+            * Problem logging in. To create an account visit our
             <Link to={`/signUp`}> Sing-Up page</Link>
           </div>
         )}
