@@ -88,7 +88,7 @@ module.exports = {
             });
         } catch (err) {
             console.log(err);
-            res.status(400).send('error updating service');
+            res.status(500).send('error updating service');
         }
     }
 }
