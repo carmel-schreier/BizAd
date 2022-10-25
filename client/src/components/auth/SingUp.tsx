@@ -12,6 +12,8 @@ export interface IErrors {
 
 function Login() {
   const [noMatch, setNoMatch] = useState(false);
+  const [serverMassage, setServerMassage] = useState(false);
+  const [massage, setMassage] = useState("");
   const navigate = useNavigate();
   const inputRef = useRef<null | HTMLInputElement>(null);
 
@@ -65,10 +67,19 @@ function Login() {
         password: values.password,
       };
       postRequest("users/signup", data).then((res) => {
-        navigate("/login");
+        if (res.ok) navigate("/login");
+        else
+          res.json().then((json) => {
+            setServerMassage(true);
+            setMassage(json.error);
+          });
       });
     },
   });
+  function resetMassage() {
+    setServerMassage(false);
+    setNoMatch(false);
+  }
 
   return (
     <>
@@ -88,6 +99,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.name}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {formik.touched.name && formik.errors.name ? (
@@ -103,6 +115,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.email}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {formik.touched.email && formik.errors.email ? (
@@ -119,6 +132,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.password}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {formik.touched.password && formik.errors.password ? (
@@ -137,6 +151,7 @@ function Login() {
             onChange={formik.handleChange}
             value={formik.values.passwordConf}
             onBlur={formik.handleBlur}
+            onFocus={resetMassage}
           />
         </div>
         {noMatch && (
@@ -148,6 +163,11 @@ function Login() {
         <button type="submit" className="btn btn-primary btn-lg w-100">
           Login
         </button>
+        {serverMassage && (
+          <div className="text-danger pb-2" style={{ fontSize: "15px" }}>
+            {massage}
+          </div>
+        )}
       </form>
     </>
   );

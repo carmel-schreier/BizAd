@@ -73,7 +73,7 @@ module.exports = {
         if (error) {
             console.log(error.details[0].message);
             res.status(400).send({
-                error: 'error signing up new user'
+                error: error.details[0].message
             });
             return;
         }
@@ -83,7 +83,9 @@ module.exports = {
                 email: value.email
             });
             if (user) {
-                return res.status(400).send('User already registered.');
+                return res.status(400).send({
+                    error: 'Problem registering new user'
+                });
             }
 
             const hash = await bcrypt.hash(value.password, 10);
@@ -103,7 +105,9 @@ module.exports = {
             })
         } catch (err) {
             console.log(err.message);
-            res.status(500).send('Something went wrong, please try again later');
+            res.status(500).send({
+                error: 'Something went wrong, please try again later'
+            });
         }
     },
 
